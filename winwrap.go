@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"os/exec"
@@ -41,18 +42,30 @@ func (w *wrapper) setArgs(args []string) {
 			skipNext = b != a
 		}
 
-		w.args = append(w.args, args[a])
+		w.args = append(w.args, fmt.Sprint(args[a]))
 	}
 }
 
 func (w wrapper) argString() string {
+
 	return strings.Join(w.args, " ")
 }
 
 func (w wrapper) run() error {
-	c := exec.Command(w.cmd, w.argString())
+	fmt.Println("Executing command: ", w.cmd, " ", w.argString(), len(w.args))
+
+	c := exec.Command(w.cmd, w.args...)
+	var out bytes.Buffer
+	var errOut bytes.Buffer
+	c.Stdout = &out
+	c.Stderr = &errOut
 
 	err := c.Run()
+	if err != nil {
+		fmt.Println(errOut.String())
+	}
+	fmt.Println(out.String())
+
 	return err
 }
 
