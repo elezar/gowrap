@@ -1,0 +1,32 @@
+The SCOTCH builder is a collection of Makefiles and scripts to build the required flavours
+of the SCOTCH libraries.
+
+The easiest way to build the library for a given platform is to use the build_all.sh
+script provided.
+
+This checks for a scotch_VERSION.tar.gz archive in this folder, and runs MAKE for all the
+platform-specific MPI flavours.
+
+For example, running:
+
+bash ./build_all.sh win64
+
+when a file scotch_6.0.5rc3.tar.gz is present will build SCOTCH for MPICH, MSMPI, and
+IMPI.
+
+The steps are as follows:
+
+1) Extract the archive to scotch_<VERSION>_<PLAT_NAME>_<COMMLIB>_source and build.
+2) Copy the include files and libraries to:
+    ../<VERSION>/<PLAT_NAME>/include
+    ../<VERSION>/<PLAT_NAME>/lib/
+    ../<VERSION>/<PLAT_NAME>/lib/<COMMLIB>/
+
+   Note that only the sequential libraries are copied to <PLAT_NAME>/lib/ and the
+   parallel libraries to <PLAT_NAME>/lib/<COMMLIB>/
+
+
+For Windows builds, there are a set of dummy includes for <strings.h> and <sys/time.h>
+which are used in some of the SCOTCH source files without checking for platform support.
+There is also a compiler/linker driver implemented in winwrap.go. This tool is compiled
+to and executable, and requires the Go compiler to be installed.

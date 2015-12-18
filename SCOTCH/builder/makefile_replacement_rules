@@ -1,0 +1,2 @@
+s&$(LIB)&$(LIB_EXT)&g
+s&\($(CCD).*\)$(LDFLAGS)&\1&g
