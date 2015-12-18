@@ -40,6 +40,10 @@ func (w *wrapper) setArgs(args []string) {
 				args[a] = "/Fo:" + strings.Trim(args[b], " ")
 			}
 			skipNext = b != a
+		case w.cmd == "lib":
+			if strings.HasSuffix(args[a], ".lib") {
+				args[a] = "/out:" + strings.Trim(args[a], " ")
+			}
 		}
 
 		w.args = append(w.args, fmt.Sprint(args[a]))
